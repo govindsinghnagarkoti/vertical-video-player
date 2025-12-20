@@ -23,15 +23,6 @@ export function VideoFeed({ videos }: VideoFeedProps) {
   const handleVideoEnd = async (index: number) => {
     if (!containerRef.current) return;
 
-    // Exit fullscreen if active so the scroll transition is visible
-    if (document.fullscreenElement) {
-        try {
-            await document.exitFullscreen();
-        } catch (err) {
-            console.error("Failed to exit fullscreen:", err);
-        }
-    }
-
     let nextIndex = index + 1;
     // Loop back to start if at the end
     if (nextIndex >= videos.length) {
@@ -72,6 +63,23 @@ export function VideoFeed({ videos }: VideoFeedProps) {
 
   const handleOpenModal = () => setShowModal(true);
 
+  // Global Fullscreen Handler
+  const toggleFullscreen = async () => {
+      if (!containerRef.current) return;
+
+      if (!document.fullscreenElement) {
+        try {
+          await containerRef.current.requestFullscreen();
+        } catch (err) {
+          console.error("Error attempting to enable fullscreen:", err);
+        }
+      } else {
+        if (document.exitFullscreen) {
+          await document.exitFullscreen();
+        }
+      }
+  };
+
   return (
     <>
       <div 
@@ -99,6 +107,7 @@ export function VideoFeed({ videos }: VideoFeedProps) {
               isMuted={isGlobalMuted}
               onToggleMute={(muted) => setIsGlobalMuted(muted)}
               onEnded={() => handleVideoEnd(index)}
+              onToggleFullscreen={toggleFullscreen}
               loop={false} // Sequential play
             />
             

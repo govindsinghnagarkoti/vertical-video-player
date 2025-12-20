@@ -11,6 +11,7 @@ interface VideoPlayerProps {
   isMuted?: boolean;
   onToggleMute?: (muted: boolean) => void;
   onEnded?: () => void;
+  onToggleFullscreen?: () => void;
   loop?: boolean;
 }
 
@@ -21,6 +22,7 @@ export function VideoPlayer({
   isMuted = true,
   onToggleMute,
   onEnded,
+  onToggleFullscreen,
   loop = false
 }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -36,6 +38,18 @@ export function VideoPlayer({
   // Touch handling state
   const lastTapRef = useRef<number>(0);
   const touchStartRef = useRef<{ y: number; vol: number } | null>(null);
+
+  // Handle global fullscreen changes to update local state
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      // If parent is handling fullscreen, we need to know if we are effectively fullscreen
+      // If document.fullscreenElement exists, we consider ourselves in fullscreen mode for UI purposes
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
+  }, []);
 
   // Handle active state changes
   useEffect(() => {
@@ -119,6 +133,12 @@ export function VideoPlayer({
 
   // Handle Fullscreen
   const toggleFullscreen = useCallback(async () => {
+    // If parent provided a handler (e.g. VideoFeed), use it
+    if (onToggleFullscreen) {
+        onToggleFullscreen();
+        return;
+    }
+
     if (!containerRef.current) return;
 
     if (!document.fullscreenElement) {
@@ -134,7 +154,7 @@ export function VideoPlayer({
         setIsFullscreen(false);
       }
     }
-  }, []);
+  }, [onToggleFullscreen]);
 
   // Time Update
   const handleTimeUpdate = () => {
