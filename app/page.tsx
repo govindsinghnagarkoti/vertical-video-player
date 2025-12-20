@@ -1,36 +1,18 @@
-import fs from "fs";
-import path from "path";
 import { VideoFeed } from "@/components/VideoFeed/VideoFeed";
 
 export default function Home() {
-  const videosDir = path.join(process.cwd(), "public/videos");
-  let videos: string[] = [];
-
-  try {
-    const files = fs.readdirSync(videosDir);
-    videos = files
-      .filter((file) => /\.(mp4|webm|ogg)$/i.test(file)) // Filter for browser-supported formats
-      .sort((a, b) => a.localeCompare(b)) // Sort alphabetically
-      .map((file) => `/videos/${file}`);
-      
-    // Log warning for unsupported formats if any (for server console)
-    const unsupported = files.filter(file => 
-      /\.(avi|mov|mkv|flv|wmv)$/i.test(file)
-    );
-    if (unsupported.length > 0) {
-      console.warn("Skipped unsupported video formats (browser requires transcoding):", unsupported);
-    }
-  } catch (error) {
-    console.error("Error reading videos directory:", error);
-  }
-
-  // Fallback to root video if no videos found in /videos
-  if (videos.length === 0) {
-     videos = ["/video.mp4"];
-  }
+  // List of local videos
+  const videos = [
+    "/videos/2025-06-21_09-21-10_UTC_DLKFZqRSZfp.mp4",
+    "/videos/2025-12-06_20-27-13_UTC_DR73Vfak0mV.mp4",
+    "/videos/2025-12-07_15-04-29_UTC_DR92-FCkp0Y.mp4",
+    "/videos/2025-12-17_10-06-46_UTC_DSXFAHRkhoI.mp4",
+    "/videos/2025-12-18_10-51-03_UTC_DSZuwzNEtcC.mp4",
+    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+  ];
 
   return (
-    <main className="relative w-full h-screen bg-black overflow-hidden">
+    <main className="relative w-full h-screen bg-black">
       <VideoFeed videos={videos} />
     </main>
   );

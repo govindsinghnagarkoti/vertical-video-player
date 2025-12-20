@@ -20,8 +20,17 @@ export function VideoFeed({ videos }: VideoFeedProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to next video
-  const handleVideoEnd = (index: number) => {
+  const handleVideoEnd = async (index: number) => {
     if (!containerRef.current) return;
+
+    // Exit fullscreen if active so the scroll transition is visible
+    if (document.fullscreenElement) {
+        try {
+            await document.exitFullscreen();
+        } catch (err) {
+            console.error("Failed to exit fullscreen:", err);
+        }
+    }
 
     let nextIndex = index + 1;
     // Loop back to start if at the end
