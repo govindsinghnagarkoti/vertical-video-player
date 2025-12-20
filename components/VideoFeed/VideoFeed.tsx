@@ -6,6 +6,7 @@ import { InstagramButton } from "@/components/SocialButtons/InstagramButton";
 import { GPayButton } from "@/components/SocialButtons/GPayButton";
 import { ImageModal } from "@/components/ui/ImageModal";
 import { DownloadModal } from "@/components/ui/DownloadModal";
+import { QRModal } from "@/components/ui/QRModal";
 import { Plus } from "lucide-react";
 
 interface VideoFeedProps {
@@ -16,6 +17,7 @@ export function VideoFeed({ videos }: VideoFeedProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isGlobalMuted, setIsGlobalMuted] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [showQRModal, setShowQRModal] = useState(false);
   const [showDownloadModal, setShowDownloadModal] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -62,6 +64,7 @@ export function VideoFeed({ videos }: VideoFeedProps) {
   }, [videos]);
 
   const handleOpenModal = () => setShowModal(true);
+  const handleOpenQR = () => setShowQRModal(true);
 
   // Global Fullscreen Handler
   const toggleFullscreen = async () => {
@@ -112,10 +115,10 @@ export function VideoFeed({ videos }: VideoFeedProps) {
             />
             
             {/* Social Overlay Layer */}
-            <div className="absolute bottom-[100px] left-0 right-0 z-10 px-6 pb-8 pointer-events-none">
+            <div className="absolute bottom-8 left-0 right-0 z-20 px-6 pb-4 pointer-events-none">
                <div className="flex flex-col items-center gap-4 pointer-events-auto">
                   <div className="flex flex-col sm:flex-row items-center gap-4 w-full justify-center">
-                    <InstagramButton onClick={handleOpenModal} />
+                    <InstagramButton onClick={handleOpenQR} />
                     <GPayButton amount="$10.00" onClick={handleOpenModal} />
                   </div>
                </div>
@@ -133,6 +136,12 @@ export function VideoFeed({ videos }: VideoFeedProps) {
       <DownloadModal
         isOpen={showDownloadModal}
         onClose={() => setShowDownloadModal(false)}
+      />
+
+      <QRModal
+        isOpen={showQRModal}
+        onClose={() => setShowQRModal(false)}
+        url="https://www.instagram.com/reel/DSfM2-4kpam/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
       />
     </>
   );
