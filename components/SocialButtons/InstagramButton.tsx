@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 interface InstagramButtonProps {
   username?: string;
   className?: string;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent) => void;
 }
 
 export function InstagramButton({ username = "trae.ai", className, onClick }: InstagramButtonProps) {

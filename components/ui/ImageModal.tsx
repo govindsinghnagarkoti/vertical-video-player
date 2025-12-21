@@ -35,14 +35,14 @@ export function ImageModal({ isOpen, onClose, imageUrl }: ImageModalProps) {
       </button>
 
       <div 
-        className="relative w-full max-w-lg aspect-[4/5] rounded-xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200"
+        className="relative w-full max-w-lg h-[70vh] rounded-xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 bg-white"
         onClick={(e) => e.stopPropagation()}
       >
         <Image
           src={imageUrl}
-          alt="Preview"
+          alt="Payment QR Code"
           fill
-          className="object-cover"
+          className="object-contain"
           sizes="(max-width: 768px) 100vw, 500px"
           priority
         />

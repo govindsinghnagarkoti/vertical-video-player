@@ -63,8 +63,14 @@ export function VideoFeed({ videos }: VideoFeedProps) {
     return () => observer.disconnect();
   }, [videos]);
 
-  const handleOpenModal = () => setShowModal(true);
-  const handleOpenQR = () => setShowQRModal(true);
+  const handleOpenModal = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setShowModal(true);
+  };
+  const handleOpenQR = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setShowQRModal(true);
+  };
 
   // Global Fullscreen Handler
   const toggleFullscreen = async () => {
@@ -118,31 +124,31 @@ export function VideoFeed({ videos }: VideoFeedProps) {
             <div className="absolute bottom-8 left-0 right-0 z-20 px-6 pb-4 pointer-events-none">
                <div className="flex flex-col items-center gap-4 pointer-events-auto">
                   <div className="flex flex-col sm:flex-row items-center gap-4 w-full justify-center">
-                    <InstagramButton onClick={handleOpenQR} />
-                    <GPayButton amount="$10.00" onClick={handleOpenModal} />
+                    <InstagramButton onClick={(e) => handleOpenQR(e)} />
+                    <GPayButton amount="$10.00" onClick={(e) => handleOpenModal(e)} />
                   </div>
                </div>
             </div>
           </section>
         ))}
+
+        <ImageModal 
+          isOpen={showModal} 
+          onClose={() => setShowModal(false)}
+          imageUrl="/gpay-qr.jpg"
+        />
+
+        <DownloadModal
+          isOpen={showDownloadModal}
+          onClose={() => setShowDownloadModal(false)}
+        />
+
+        <QRModal
+          isOpen={showQRModal}
+          onClose={() => setShowQRModal(false)}
+          url="https://www.instagram.com/toybazaar1608/"
+        />
       </div>
-
-      <ImageModal 
-        isOpen={showModal} 
-        onClose={() => setShowModal(false)}
-        imageUrl="https://picsum.photos/600/800"
-      />
-
-      <DownloadModal
-        isOpen={showDownloadModal}
-        onClose={() => setShowDownloadModal(false)}
-      />
-
-      <QRModal
-        isOpen={showQRModal}
-        onClose={() => setShowQRModal(false)}
-        url="https://www.instagram.com/reel/DSfM2-4kpam/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
-      />
     </>
   );
 }
