@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useState, useEffect, useCallback } from "react";
-import { Play, Volume2, VolumeX, Maximize2, Minimize2 } from "lucide-react";
+import { Play, Volume2, VolumeX, Maximize2, Minimize2, Scaling, Expand } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface VideoPlayerProps {
@@ -36,10 +36,16 @@ export function VideoPlayer({
   const [progress, setProgress] = useState(0);
   const [showControls, setShowControls] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [currentObjectFit, setCurrentObjectFit] = useState<"cover" | "contain">(objectFit);
   
   // Touch handling state
   const lastTapRef = useRef<number>(0);
   const touchStartRef = useRef<{ y: number; vol: number } | null>(null);
+
+  // Sync prop changes
+  useEffect(() => {
+    setCurrentObjectFit(objectFit);
+  }, [objectFit]);
 
   // Handle global fullscreen changes to update local state
   useEffect(() => {
@@ -231,7 +237,7 @@ export function VideoPlayer({
         src={src}
         poster={poster}
         preload="auto"
-        className={cn("w-full h-full", objectFit === "contain" ? "object-contain" : "object-cover")}
+        className={cn("w-full h-full transition-all duration-300", currentObjectFit === "contain" ? "object-contain" : "object-cover")}
         playsInline
         loop={loop}
         muted={isMuted}
@@ -288,18 +294,38 @@ export function VideoPlayer({
                 )}
             </button>
 
-            {/* Right: Fullscreen (Desktop mostly, but works on mobile too) */}
-            <button 
-                onClick={(e) => { e.stopPropagation(); toggleFullscreen(); }}
-                className="p-2 rounded-full hover:bg-white/20 transition-colors"
-                aria-label={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
-            >
-                 {isFullscreen ? (
-                    <Minimize2 className="w-6 h-6 text-white" />
-                 ) : (
-                    <Maximize2 className="w-6 h-6 text-white" />
-                 )}
-            </button>
+            {/* Right: Controls Group */}
+            <div className="flex items-center gap-4">
+                {/* Object Fit Toggle */}
+                <button 
+                    onClick={(e) => { 
+                        e.stopPropagation(); 
+                        setCurrentObjectFit(prev => prev === "cover" ? "contain" : "cover");
+                    }}
+                    className="p-2 rounded-full hover:bg-white/20 transition-colors"
+                    aria-label={currentObjectFit === "cover" ? "Fit to Screen" : "Fill Screen"}
+                    title={currentObjectFit === "cover" ? "Show full video" : "Fill screen (crop)"}
+                >
+                     {currentObjectFit === "cover" ? (
+                        <Scaling className="w-6 h-6 text-white" />
+                     ) : (
+                        <Expand className="w-6 h-6 text-white" />
+                     )}
+                </button>
+
+                {/* Fullscreen (Desktop mostly, but works on mobile too) */}
+                <button 
+                    onClick={(e) => { e.stopPropagation(); toggleFullscreen(); }}
+                    className="p-2 rounded-full hover:bg-white/20 transition-colors"
+                    aria-label={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+                >
+                     {isFullscreen ? (
+                        <Minimize2 className="w-6 h-6 text-white" />
+                     ) : (
+                        <Maximize2 className="w-6 h-6 text-white" />
+                     )}
+                </button>
+            </div>
         </div>
       </div>
     </div>

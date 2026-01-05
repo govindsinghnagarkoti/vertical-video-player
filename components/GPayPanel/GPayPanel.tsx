@@ -1,7 +1,7 @@
 "use client";
 
 import { QRCodeSVG } from "qrcode.react";
-import { Wallet } from "lucide-react";
+import { Wallet, Gamepad2, Puzzle, Car, Rocket, Bike, Dice5, Baby, Bot, Dna, Ghost, Joystick, Sword, Trophy, Crown, Gift, PartyPopper, Sparkles } from "lucide-react";
 
 // Google Colors: Blue (#4285F4), Red (#EA4335), Yellow (#FBBC05), Green (#34A853)
 // Using a clean white background with Google Pay Blue accents for official look
@@ -12,7 +12,39 @@ const PAY_URL = `upi://pay?pa=${UPI_ID}&pn=ToyBazaar&tn=Payment&cu=INR`;
 export function GPayPanel() {
   return (
     <div className="h-full w-full relative bg-white overflow-hidden font-sans">
-       <div className="h-full w-full flex flex-col items-center justify-center p-6 bg-white text-gray-900 relative">
+       {/* Background Toy Icons Pattern (Black & White, Low Opacity) */}
+       <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-[0.08] text-black">
+            {/* Top Area */}
+            <div className="absolute top-[2%] left-[2%] rotate-12"><Gamepad2 size={96} /></div>
+            <div className="absolute top-[5%] right-[15%] -rotate-12"><Puzzle size={80} /></div>
+            <div className="absolute top-[8%] left-[45%] rotate-45"><Joystick size={70} /></div>
+            <div className="absolute top-[12%] right-[2%] rotate-6"><Ghost size={65} /></div>
+            
+            {/* Upper Middle */}
+            <div className="absolute top-[20%] left-[10%] -rotate-12"><Rocket size={90} /></div>
+            <div className="absolute top-[25%] right-[10%] rotate-12"><Trophy size={75} /></div>
+            <div className="absolute top-[28%] left-[80%] -rotate-6"><Crown size={60} /></div>
+            <div className="absolute top-[32%] left-[25%] rotate-90"><Dice5 size={55} /></div>
+
+            {/* Middle */}
+            <div className="absolute top-[45%] left-[2%] -translate-y-1/2 rotate-6"><Bike size={80} /></div>
+            <div className="absolute top-[48%] right-[5%] rotate-180"><Bot size={75} /></div>
+            <div className="absolute top-[50%] left-[15%] rotate-12"><Sword size={65} /></div>
+            <div className="absolute top-[55%] right-[25%] -rotate-45"><Sparkles size={50} /></div>
+
+            {/* Lower Middle */}
+            <div className="absolute bottom-[35%] left-[8%] rotate-45"><Car size={100} /></div>
+            <div className="absolute bottom-[30%] right-[15%] -rotate-12"><Dna size={70} /></div>
+            <div className="absolute bottom-[25%] left-[85%] rotate-6"><Gift size={60} /></div>
+            
+            {/* Bottom Area */}
+            <div className="absolute bottom-[10%] left-[20%] -rotate-6"><Baby size={85} /></div>
+            <div className="absolute bottom-[5%] right-[5%] rotate-12"><PartyPopper size={80} /></div>
+            <div className="absolute bottom-[15%] left-[5%] rotate-90"><Puzzle size={45} /></div>
+            <div className="absolute bottom-[8%] left-[50%] -rotate-12"><Gamepad2 size={55} /></div>
+       </div>
+
+       <div className="h-full w-full flex flex-col items-center justify-center p-6 bg-transparent text-gray-900 relative z-10">
            
            {/* Header / Branding Section */}
            <div className="absolute top-12 w-full flex flex-col items-center space-y-4">

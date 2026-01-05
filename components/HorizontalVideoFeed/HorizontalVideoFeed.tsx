@@ -90,7 +90,7 @@ export function HorizontalVideoFeed({ videos }: HorizontalVideoFeedProps) {
               onToggleMute={setIsGlobalMuted}
               onEnded={() => handleVideoEnd(index)}
               loop={false} // Auto-advance playlist
-              objectFit="contain"
+              objectFit="cover"
             />
           </section>
         ))}
