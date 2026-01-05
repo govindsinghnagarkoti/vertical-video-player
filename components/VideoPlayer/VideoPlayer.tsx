@@ -13,6 +13,7 @@ interface VideoPlayerProps {
   onEnded?: () => void;
   onToggleFullscreen?: () => void;
   loop?: boolean;
+  objectFit?: "cover" | "contain";
 }
 
 export function VideoPlayer({ 
@@ -23,7 +24,8 @@ export function VideoPlayer({
   onToggleMute,
   onEnded,
   onToggleFullscreen,
-  loop = false
+  loop = false,
+  objectFit = "cover"
 }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -229,7 +231,7 @@ export function VideoPlayer({
         src={src}
         poster={poster}
         preload="auto"
-        className="w-full h-full object-cover"
+        className={cn("w-full h-full", objectFit === "contain" ? "object-contain" : "object-cover")}
         playsInline
         loop={loop}
         muted={isMuted}

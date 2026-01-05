@@ -31,6 +31,16 @@ export function VideoFeed({ videos }: VideoFeedProps) {
       nextIndex = 0;
     }
 
+    // If there's only one video, replay it manually
+    if (nextIndex === index) {
+        const videoElement = containerRef.current.querySelector(`section[data-index="${index}"] video`) as HTMLVideoElement;
+        if (videoElement) {
+            videoElement.currentTime = 0;
+            videoElement.play().catch(() => {});
+        }
+        return;
+    }
+
     const nextSection = containerRef.current.querySelector(`section[data-index="${nextIndex}"]`);
     if (nextSection) {
       nextSection.scrollIntoView({ behavior: "smooth" });
@@ -117,7 +127,7 @@ export function VideoFeed({ videos }: VideoFeedProps) {
               onToggleMute={(muted) => setIsGlobalMuted(muted)}
               onEnded={() => handleVideoEnd(index)}
               onToggleFullscreen={toggleFullscreen}
-              loop={false} // Sequential play
+              loop={false} // Auto-advance playlist
             />
             
             {/* Social Overlay Layer */}
